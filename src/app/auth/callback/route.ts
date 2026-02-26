@@ -16,3 +16,4 @@ export async function GET(request: Request) {
   // If something went wrong, redirect back to login
   return NextResponse.redirect(`${origin}/login?error=auth_failed`)
 }
+
