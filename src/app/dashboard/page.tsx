@@ -1,11 +1,12 @@
 // app/dashboard/page.tsx
 // This is a Server Component — data fetching happens here
 
-import { createClient } from '@/lib/supabase/server'
+
 import Link from 'next/link'
 
 export default async function DashboardHome() {
-  const supabase = await createClient()
+
+  // const supabase = await createClient()
 
   // Example: fetch recent posts from Supabase
   // const { data: posts } = await supabase
@@ -13,7 +14,6 @@ export default async function DashboardHome() {
   //   .select('*')
   //   .order('created_at', { ascending: false })
   //   .limit(10)
-
   return (
     <div className="page active">
       <div className="invite-banner">
@@ -62,7 +62,6 @@ export default async function DashboardHome() {
             <Link href="/dashboard/feed" className="section-link">View all →</Link>
           </div>
 
-          {/* Feed cards — replace with real data from Supabase later */}
           <div className="feed-card">
             <div className="feed-card-top">
               <div className="feed-avatar" style={{ background: 'linear-gradient(135deg,#6c63ff,#a78bfa)' }}>JS</div>
@@ -114,6 +113,33 @@ export default async function DashboardHome() {
               <span className="feed-action">↗ Share</span>
             </div>
           </div>
+
+          <div className="feed-card">
+            <div className="feed-card-top">
+              <div className="feed-avatar" style={{ background: 'linear-gradient(135deg,#34d399,#38bdf8)' }}>AR</div>
+              <div className="feed-meta">
+                <div className="feed-name">Alex R. <span style={{ color: 'var(--text3)', fontWeight: 400 }}> · Carnegie Mellon · CS &apos;25</span></div>
+                <div className="feed-detail">Quant Intern → Jane Street</div>
+              </div>
+              <div className="feed-time">8h ago</div>
+            </div>
+            <div className="outcome-strip outcome-progress">⏳ In Process — waiting after superday</div>
+            <div className="feed-body">
+              Jane Street superday done. <strong>5 rounds:</strong> mental math warm-up, probability theory deep dive, trading game simulation, market making problem, and a final interview with a partner. The trading game had poker-like mechanics.
+            </div>
+            <div className="tag-row">
+              <span className="tag tag-company">Jane Street</span>
+              <span className="tag tag-oa">In Process</span>
+              <span className="tag tag-topic">Probability</span>
+              <span className="tag tag-topic">Market Making</span>
+            </div>
+            <div className="feed-actions">
+              <span className="feed-action">❤️ 312</span>
+              <span className="feed-action">💬 91 comments</span>
+              <span className="feed-action">🔖 Save</span>
+              <span className="feed-action">↗ Share</span>
+            </div>
+          </div>
         </div>
 
         <div className="right-panel">
@@ -155,6 +181,30 @@ export default async function DashboardHome() {
               </div>
             ))}
           </div>
+
+          <div className="panel-card">
+            <div className="section-title" style={{ marginBottom: 14 }}>📊 Offer Stats This Week</div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+              {[
+                { name: 'Google',    pay: '$55/hr', width: '100%', cls: 'percent-fill-green' },
+                { name: 'Meta',      pay: '$52/hr', width: '94%',  cls: 'percent-fill-green' },
+                { name: 'Amazon',    pay: '$48/hr', width: '87%',  cls: 'percent-fill-purple' },
+                { name: 'Microsoft', pay: '$46/hr', width: '83%',  cls: 'percent-fill-purple' },
+                { name: 'Stripe',    pay: '$60/hr', width: '100%', cls: 'percent-fill-yellow' },
+              ].map(item => (
+                <div key={item.name}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 13 }}>
+                    <span style={{ color: 'var(--text2)' }}>{item.name}</span>
+                    <span style={{ color: 'var(--green)', fontFamily: "'JetBrains Mono',monospace" }}>{item.pay}</span>
+                  </div>
+                  <div className="percent-bar">
+                    <div className={item.cls} style={{ width: item.width }} />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
         </div>
       </div>
     </div>

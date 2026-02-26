@@ -2,13 +2,14 @@ import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import Sidebar from '@/components/Sidebar'
 import Topbar from '@/components/Topbar'
+import CursorEffect from '@/components/CursorEffect'
 
 export default async function DashboardLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
-  // Server-side auth check — redirect to login if not authenticated
+    // Server-side auth check — redirect to login if not authenticated
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
 
@@ -18,6 +19,7 @@ export default async function DashboardLayout({
 
   return (
     <div className="app">
+      <CursorEffect />
       <Sidebar />
       <div className="main">
         <Topbar user={user} />
