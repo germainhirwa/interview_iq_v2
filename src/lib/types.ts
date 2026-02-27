@@ -61,6 +61,7 @@ export interface Company {
   type: string
   location: string
   logo_emoji: string
+  logo_url?: string
   rating: number
   avg_pay_hr: number
   post_count: number

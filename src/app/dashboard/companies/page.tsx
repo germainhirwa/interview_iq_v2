@@ -2,6 +2,7 @@
 
 import { companies } from '@/lib/data/companies'
 import Link from 'next/link'
+import Image from 'next/image'
 import { useState, useMemo } from 'react'
 
 // Derive unique categories from the data
@@ -206,7 +207,20 @@ export default function CompaniesPage() {
               style={{ cursor: 'pointer', textDecoration: 'none' }}
             >
               <div className="company-card-top">
-                <div className="company-logo">{c.logo_emoji}</div>
+                <div className="company-logo" style={{ overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  {c.logo_url ? (
+                    <Image
+                      src={c.logo_url}
+                      alt={c.name}
+                      width={36}
+                      height={36}
+                      style={{ objectFit: 'contain', borderRadius: 6 }}
+                      unoptimized
+                    />
+                  ) : (
+                    c.logo_emoji
+                  )}
+                </div>
                 <div>
                   <div className="company-name">{c.name}</div>
                   <div className="company-type">{c.type} · {c.location.split(',')[0]}</div>

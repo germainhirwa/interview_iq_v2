@@ -2,6 +2,7 @@
 
 import { Company } from '@/lib/types'
 import { useState } from 'react'
+import Image from 'next/image'
 
 export interface CompanyDetailViewProps {
   company: Company
@@ -18,7 +19,20 @@ export default function CompanyDetailView({ company, onBack }: CompanyDetailView
 
       <div className="company-hero">
         <div className="company-hero-top">
-          <div className="company-logo-lg">{company.logo_emoji}</div>
+          <div className="company-logo-lg" style={{ overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative' }}>
+            {company.logo_url ? (
+              <Image
+                src={company.logo_url}
+                alt={company.name}
+                width={64}
+                height={64}
+                style={{ objectFit: 'contain', borderRadius: 8 }}
+                unoptimized
+              />
+            ) : (
+              company.logo_emoji
+            )}
+          </div>
           <div className="company-hero-info">
             <h1>{company.name}</h1>
             <div className="company-hero-sub">{company.description || `${company.type} · ${company.location}`}</div>

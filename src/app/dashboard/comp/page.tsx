@@ -2,6 +2,7 @@
 
 import { companies } from '@/lib/data/companies'
 import { useState } from 'react'
+import Image from 'next/image'
 
 export default function CompPage() {
   const [view, setView] = useState<'Internship' | 'Full-Time'>('Internship')
@@ -10,6 +11,7 @@ export default function CompPage() {
   const rows = companies.flatMap(company => {
     return (company.compensation_table || []).map(comp => ({
       logo: company.logo_emoji,
+      logoUrl: company.logo_url,
       name: company.name,
       role: comp.role,
       hr: comp.pay_hr || '—',
@@ -131,7 +133,23 @@ export default function CompPage() {
             <tbody>
               {filteredRows.map((r, i) => (
                 <tr key={`${r.name}-${r.role}-${i}`}>
-                  <td style={{ minWidth: 160 }}><span style={{ fontSize: 16 }}>{r.logo}</span> <strong style={{ color: 'var(--text)' }}>{r.name}</strong></td>
+                  <td style={{ minWidth: 160, display: 'flex', alignItems: 'center', gap: 8 }}>
+                    <div style={{ width: 24, height: 24, flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }}>
+                      {r.logoUrl ? (
+                        <Image
+                          src={r.logoUrl}
+                          alt={r.name}
+                          width={24}
+                          height={24}
+                          style={{ objectFit: 'contain', borderRadius: 4 }}
+                          unoptimized
+                        />
+                      ) : (
+                        <span style={{ fontSize: 16 }}>{r.logo}</span>
+                      )}
+                    </div>
+                    <strong style={{ color: 'var(--text)' }}>{r.name}</strong>
+                  </td>
                   <td className="role" style={{ whiteSpace: 'nowrap' }}>{r.role}</td>
                   
                   {view === 'Internship' ? (
