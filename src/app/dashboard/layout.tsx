@@ -9,7 +9,7 @@ export default async function DashboardLayout({
 }: {
   children: React.ReactNode
 }) {
-    // Server-side auth check — redirect to login if not authenticated
+  // Server-side auth check — redirect to login if not authenticated
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
 
@@ -17,10 +17,17 @@ export default async function DashboardLayout({
     redirect('/login')
   }
 
+  // Fetch user profile for sidebar
+  const { data: profile } = await supabase
+    .from('profiles')
+    .select('display_name, school, graduation_year, major, is_premium')
+    .eq('id', user.id)
+    .single()
+
   return (
     <div className="app">
       <CursorEffect />
-      <Sidebar />
+      <Sidebar profile={profile} />
       <div className="main">
         <Topbar user={user} />
         {children}

@@ -16,20 +16,56 @@ export async function GET(request: Request) {
 
       const email = user?.email || ''
 
-      // ✅ Restrict to .edu
+      // ✅ Restrict to .edu emails only
       if (!email.endsWith('.edu')) {
-        // Sign them out immediately
         await supabase.auth.signOut()
-
         return NextResponse.redirect(
           `${origin}/login?error=Only .edu emails allowed`
         )
+      }
+
+      if (user) {
+        // ✅ Try to find existing profile
+        const { data: existingProfile } = await supabase
+          .from('profiles')
+          .select('id, school, major, graduation_year')
+          .eq('id', user.id)
+          .single()
+
+        if (!existingProfile) {
+          // New user — create a blank profile row
+          const displayName =
+            user.user_metadata?.full_name ||
+            user.user_metadata?.name ||
+            email.split('@')[0]
+
+          await supabase.from('profiles').insert({
+            id: user.id,
+            email,
+            display_name: displayName,
+            is_premium: false,
+            invite_count: 0,
+          })
+
+          // Send them to onboarding to complete their profile
+          return NextResponse.redirect(`${origin}/onboarding`)
+        }
+
+        // Existing user — check if profile is complete
+        const isIncomplete =
+          !existingProfile.school ||
+          !existingProfile.major ||
+          !existingProfile.graduation_year
+
+        if (isIncomplete) {
+          return NextResponse.redirect(`${origin}/onboarding`)
+        }
       }
 
       return NextResponse.redirect(`${origin}/dashboard`)
     }
   }
 
-    // If something went wrong, redirect back to login
+  // If something went wrong, redirect back to login
   return NextResponse.redirect(`${origin}/login?error=auth_failed`)
 }

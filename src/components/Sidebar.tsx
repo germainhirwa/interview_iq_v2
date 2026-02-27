@@ -3,6 +3,14 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
+interface Profile {
+  display_name: string | null
+  school: string | null
+  graduation_year: number | null
+  major: string | null
+  is_premium: boolean | null
+}
+
 const mainNavItems = [
   { href: '/dashboard', icon: '🏠', label: 'Home' },
   { href: '/dashboard/feed', icon: '📡', label: 'Feed', badge: '24' },
@@ -12,23 +20,43 @@ const mainNavItems = [
 
 const insightItems = [
   { href: '/dashboard/comp', icon: '💰', label: 'Compensation' },
-  { href: '/dashboard/resources', icon: '📚', label: 'Resources' },
-  { href: '/dashboard/referrals', icon: '🤝', label: 'Referrals' },
+  { href: '/dashboard/resources', icon: '📚', label: 'Resources', premium: true },
+  { href: '/dashboard/referrals', icon: '🤝', label: 'Referrals', premium: true },
 ]
 
 const youItems = [
   { href: '/dashboard/applications', icon: '🎯', label: 'My Applications' },
   { href: '/dashboard/saved', icon: '⭐', label: 'Saved' },
-  { href: '/dashboard/resume', icon: '📄', label: 'Resume Check' },
+  { href: '/dashboard/resume', icon: '📄', label: 'Resume Check', premium: true },
 ]
 
-export default function Sidebar() {
+function getInitials(name: string | null | undefined): string {
+  if (!name) return 'U'
+  const parts = name.trim().split(' ')
+  if (parts.length === 1) return parts[0][0].toUpperCase()
+  return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase()
+}
+
+export default function Sidebar({ profile }: { profile: Profile | null }) {
   const pathname = usePathname()
 
   const isActive = (href: string) => {
     if (href === '/dashboard') return pathname === '/dashboard'
     return pathname.startsWith(href)
   }
+
+  const displayName = profile?.display_name || 'Student'
+  const school = profile?.school || 'University'
+  const gradYear = profile?.graduation_year
+  const major = profile?.major
+  const isPremium = profile?.is_premium ?? false
+
+  // Format: "MIT · CS '26" or just "MIT" if no major/year
+  const schoolLine = [
+    school,
+    major ? major.split(' ')[0] : null,        // first word of major e.g. "Computer"
+    gradYear ? `'${String(gradYear).slice(2)}` : null,
+  ].filter(Boolean).join(' · ')
 
   return (
     <nav className="sidebar">
@@ -60,10 +88,13 @@ export default function Sidebar() {
           <Link
             key={item.href}
             href={item.href}
-            className={'nav-item' + (isActive(item.href) ? ' active' : '')}
+            className={'nav-item' + (isActive(item.href) ? ' active' : '') + (item.premium && !isPremium ? ' nav-item-premium' : '')}
           >
             <span className="icon">{item.icon}</span>
             {item.label}
+            {item.premium && !isPremium && (
+              <span className="nav-crown">👑</span>
+            )}
           </Link>
         ))}
       </div>
@@ -74,20 +105,26 @@ export default function Sidebar() {
           <Link
             key={item.href}
             href={item.href}
-            className={'nav-item' + (isActive(item.href) ? ' active' : '')}
+            className={'nav-item' + (isActive(item.href) ? ' active' : '') + (item.premium && !isPremium ? ' nav-item-premium' : '')}
           >
             <span className="icon">{item.icon}</span>
             {item.label}
+            {item.premium && !isPremium && (
+              <span className="nav-crown">👑</span>
+            )}
           </Link>
         ))}
       </div>
 
       <div className="sidebar-bottom">
         <div className="user-card">
-          <div className="user-avatar">GH</div>
+          <div className="user-avatar">{getInitials(profile?.display_name)}</div>
           <div className="user-info">
-            <div className="user-name">Germain H.</div>
-            <div className="user-school">Swarthmore · CS &apos;26</div>
+            <div className="user-name" style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
+              {displayName}
+              {isPremium && <span className="premium-badge-sm">✨</span>}
+            </div>
+            <div className="user-school">{schoolLine}</div>
           </div>
           <Link href="/dashboard/settings" style={{ color: 'var(--text3)', fontSize: 12 }}>⚙️</Link>
         </div>
