@@ -105,7 +105,7 @@ export default function OpportunitiesClient({ opportunities, totalCount }: Props
         <div className="stat-card">
           <div className="stat-label">Avg Intern Pay</div>
           <div className="stat-value">${avgPay} <span>/hr</span></div>
-          <div className="stat-change">Across {withPay.length.toLocaleString()} listings</div>
+          <div className="stat-change">Across {withPay.length.toLocaleString()}+ listings</div>
         </div>
         <div className="stat-card">
           <div className="stat-label">Avg Monthly</div>
@@ -114,7 +114,7 @@ export default function OpportunitiesClient({ opportunities, totalCount }: Props
         <div className="stat-card">
           <div className="stat-label">Total Listings</div>
           <div className="stat-value">{totalCount.toLocaleString()} <span>roles</span></div>
-          <div className="stat-change">Updated daily from Levels.fyi</div>
+          <div className="stat-change">Updated daily</div>
         </div>
       </div>
 
