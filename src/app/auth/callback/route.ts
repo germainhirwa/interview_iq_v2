@@ -1,5 +1,6 @@
 import { createClient } from '@/lib/supabase/server'
 import { NextResponse } from 'next/server'
+import { cookies } from 'next/headers'
 
 export async function GET(request: Request) {
   const { searchParams, origin } = new URL(request.url)
@@ -46,6 +47,36 @@ export async function GET(request: Request) {
             is_premium: false,
             invite_count: 0,
           })
+
+          // Handle referral logic
+          const cookieStore = await cookies()
+          const refId = cookieStore.get('ref_id')?.value
+
+          if (refId && refId !== user.id) {
+            // Fetch referrer
+            const { data: referrer } = await supabase
+              .from('profiles')
+              .select('invite_count, is_premium')
+              .eq('id', refId)
+              .single()
+
+            if (referrer) {
+              const newCount = (referrer.invite_count || 0) + 1
+              const becomesPremium = referrer.is_premium || newCount >= 5
+
+              // Update referrer
+              await supabase
+                .from('profiles')
+                .update({
+                  invite_count: newCount,
+                  is_premium: becomesPremium,
+                })
+                .eq('id', refId)
+            }
+
+            // Clear the cookie
+            cookieStore.delete('ref_id')
+          }
 
           // Send them to onboarding to complete their profile
           return NextResponse.redirect(`${origin}/onboarding`)

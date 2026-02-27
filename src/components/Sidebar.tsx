@@ -116,6 +116,26 @@ export default function Sidebar({ profile }: { profile: Profile | null }) {
         ))}
       </div>
 
+      {!isPremium && (
+        <div style={{ padding: '0 16px', marginBottom: 16 }}>
+          <Link href="/dashboard/invite" style={{
+            display: 'block',
+            background: 'linear-gradient(135deg, var(--accent), var(--accent2))',
+            color: 'white',
+            borderRadius: 12,
+            padding: '12px 14px',
+            textDecoration: 'none',
+            fontSize: 13,
+            fontWeight: 500,
+            boxShadow: '0 4px 12px rgba(108,99,255,0.2)',
+          }}>
+            <div style={{ fontSize: 18, marginBottom: 4 }}>🎁</div>
+            <div style={{ fontWeight: 600, marginBottom: 2 }}>Unlock Premium</div>
+            <div style={{ opacity: 0.9, fontSize: 11, lineHeight: 1.4 }}>Invite 5 friends to access all features.</div>
+          </Link>
+        </div>
+      )}
+
       <div className="sidebar-bottom">
         <div className="user-card">
           <div className="user-avatar">{getInitials(profile?.display_name)}</div>

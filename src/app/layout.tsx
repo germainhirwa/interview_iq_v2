@@ -4,6 +4,9 @@ import './globals.css'
 export const metadata: Metadata = {
   title: 'InterviewIQ — The CS Recruiting Intelligence Platform',
   description: 'Real-time company timelines, interview breakdowns, and comp data from thousands of CS students.',
+  icons: {
+    icon: '/interview_iq_icon.svg',
+  },
 }
 
 export default function RootLayout({

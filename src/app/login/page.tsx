@@ -3,12 +3,22 @@
 import { useState } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import Link from 'next/link'
+import { useSearchParams } from 'next/navigation'
+import { useEffect, Suspense } from 'react'
 
-export default function LoginPage() {
+function LoginContent() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
 
+  const searchParams = useSearchParams()
   const supabase = createClient()
+
+  useEffect(() => {
+    const ref = searchParams.get('ref')
+    if (ref) {
+      document.cookie = `ref_id=${ref}; path=/; max-age=86400` // 1 day
+    }
+  }, [searchParams])
 
   async function handleGoogleLogin() {
     setLoading(true)
@@ -55,5 +65,13 @@ export default function LoginPage() {
         </p>
       </div>
     </div>
+  )
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={<div className="auth-page"><div className="auth-card">Loading...</div></div>}>
+      <LoginContent />
+    </Suspense>
   )
 }
