@@ -23,10 +23,42 @@ export interface Post {
   }
 }
 
+export interface InterviewRound {
+  icon: string
+  title: string
+  sub: string
+  chip: string
+  chipCls: string
+  body: string
+}
+
+export interface TimelineStep {
+  label: string
+  date: string
+  status: 'done' | 'current' | 'pending'
+}
+
+export interface CompensationInfo {
+  role: string
+  pay_hr?: string      // For internships
+  pay_mo?: string      // For internships
+  total?: string       // For full-time
+  base?: string        // For full-time
+  stock?: string       // For full-time
+  bonus?: string       // For full-time
+  housing?: string     // For internships
+}
+
+export interface Benefit {
+  label: string
+  value: string
+}
+
 export interface Company {
   id: string
   name: string
-  type: string        // 'Big Tech' | 'Fintech' | 'Quant' etc.
+  slug: string
+  type: string
   location: string
   logo_emoji: string
   rating: number
@@ -35,7 +67,22 @@ export interface Company {
   difficulty: 'Easy' | 'Medium' | 'Hard' | 'Very Hard' | 'Extreme'
   open_roles: number
   is_hiring: boolean
+  description?: string
+  founded?: number
+  hq?: string
+  industry?: string
+  metrics?: {
+    avg_total_mo: string
+    avg_timeline: string
+    pass_rate: string
+  }
+  timeline?: TimelineStep[]
+  interviews?: InterviewRound[]
+  compensation_table?: CompensationInfo[]
+  benefits?: string[]
+  tags?: string[]
 }
+
 
 export interface CompensationEntry {
   id: string
