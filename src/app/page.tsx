@@ -351,8 +351,8 @@ export default function LandingPage() {
         </h1>
 
         <p className="hero-sub">
-          The platform <strong>28,000+ CS students</strong> use to decode every company&apos;s recruiting process — real
-          experiences, real timelines, real compensation data.
+          {/* Original: The platform <strong>28,000+ CS students use to decode every company&apos; recruiting process — real experiences, real timelines, real compensation data. */}
+          The <strong>educational platform</strong> 28,000+ CS students use to master the technical interview process — curated prep guides, case study analysis, and peer learning resources.
         </p>
 
         <div className="hero-actions">
@@ -489,7 +489,8 @@ export default function LandingPage() {
                   marginBottom: 6,
                 }}
               >
-                Company Intelligence Hub
+                {/* Original: Company Intelligence Hub */}
+                Interview Preparation Hub
               </h3>
               <p
                 style={{
@@ -499,8 +500,9 @@ export default function LandingPage() {
                   lineHeight: 1.6,
                 }}
               >
-                Every company gets its own deep page — recruiting timelines, interview breakdowns, round-by-round pass
-                rates, and compensation data. All crowd-sourced and updated in real time.
+                {/* Original: Every company gets its own deep page — recruiting timelines, interview breakdowns, round-by-round pass rates, and compensation data. All crowd-sourced and updated in real time. */}
+                Access thousands of technical interview case studies — deep-dive guides, behavioral analysis, round-by-round pass
+                strategies, and industry salary benchmarks. All curated for your academic success.
               </p>
             </div>
           </div>
