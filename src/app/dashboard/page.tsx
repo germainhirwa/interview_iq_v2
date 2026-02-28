@@ -1,39 +1,67 @@
-// app/dashboard/page.tsx
-// This is a Server Component — data fetching happens here
-
-
+import { createClient } from '@/lib/supabase/server'
 import Link from 'next/link'
-import { mockExperiences } from '@/data/mockExperiences'
+import { mockExperiences, type Experience } from '@/data/mockExperiences'
 
-export default async function DashboardHome() {
+export default async function DashboardHome({
+  searchParams
+}: {
+  searchParams: Promise<{ q?: string }>
+}) {
+  const { q } = await searchParams;
+  const query = q?.toLowerCase() || '';
 
-  // const supabase = await createClient()
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
 
-  // Example: fetch recent posts from Supabase
-  // const { data: posts } = await supabase
-  //   .from('posts')
-  //   .select('*')
-  //   .order('created_at', { ascending: false })
-  //   .limit(10)
+  let inviteCount = 0
+  let isPremium = false
+
+  if (user) {
+    const { data: profile } = await supabase
+      .from('profiles')
+      .select('invite_count, is_premium')
+      .eq('id', user.id)
+      .single()
+    inviteCount = profile?.invite_count || 0
+    isPremium = profile?.is_premium || false
+  }
+
+  const filteredExperiences = query
+    ? mockExperiences.filter(exp =>
+      exp.name.toLowerCase().includes(query) ||
+      exp.roleCompany.toLowerCase().includes(query) ||
+      exp.body.toLowerCase().includes(query) ||
+      exp.tags.some(tag => tag.text.toLowerCase().includes(query))
+    )
+    : mockExperiences.slice(0, 10); // Default to first 10 trending
+
+  const remainingInvites = Math.max(0, 5 - inviteCount)
+
   return (
     <div className="page active">
-      <div className="invite-banner">
-        <div className="invite-icon">🚀</div>
-        <div>
-          <div className="invite-title">Unlock full access — invite 5 friends</div>
-          <div className="invite-sub">You&apos;ve invited 2 friends. 3 more to unlock premium features for free.</div>
+      {!isPremium && (
+        <div className="invite-banner">
+          <div className="invite-icon">🚀</div>
+          <div>
+            <div className="invite-title">Unlock full access — invite 5 friends</div>
+            <div className="invite-sub">
+              {inviteCount === 0
+                ? "Invite 5 friends to unlock premium features for free."
+                : `You've invited ${inviteCount} friend${inviteCount === 1 ? '' : 's'}. ${remainingInvites} more to unlock premium.`}
+            </div>
+          </div>
+          <div className="invite-progress">
+            {[1, 2, 3, 4, 5].map(num => (
+              <div key={num} className={`invite-dot ${num <= inviteCount ? 'filled' : ''}`}>
+                {num <= inviteCount ? '✓' : num}
+              </div>
+            ))}
+            <Link href="/dashboard/invite" passHref>
+              <button className="top-btn primary" style={{ marginLeft: 10, whiteSpace: 'nowrap' }}>Invite Friends</button>
+            </Link>
+          </div>
         </div>
-        <div className="invite-progress">
-          <div className="invite-dot filled">✓</div>
-          <div className="invite-dot filled">✓</div>
-          <div className="invite-dot">3</div>
-          <div className="invite-dot">4</div>
-          <div className="invite-dot">5</div>
-          <Link href="/dashboard/invite" passHref>
-            <button className="top-btn primary" style={{ marginLeft: 10, whiteSpace: 'nowrap' }}>Invite Friends</button>
-          </Link>
-        </div>
-      </div>
+      )}
 
       <div className="stats-row">
         <div className="stat-card">
@@ -61,39 +89,48 @@ export default async function DashboardHome() {
       <div className="two-col">
         <div>
           <div className="section-header">
-            <div className="section-title">🔥 Trending Experiences</div>
+            <div className="section-title">
+              {query ? `🔍 Search Results for "${q}"` : '🔥 Trending Experiences'}
+            </div>
             <Link href="/dashboard/feed" className="section-link">View all →</Link>
           </div>
 
-          {mockExperiences.map((exp) => (
-            <div key={exp.id} className="feed-card">
-              <div className="feed-card-top">
-                <div className="feed-avatar" style={{ background: exp.avatarColor }}>{exp.initials}</div>
-                <div className="feed-meta">
-                  <div className="feed-name">
-                    {exp.name} <span style={{ color: 'var(--text3)', fontWeight: 400 }}>{exp.school}</span>
+          {filteredExperiences.length > 0 ? (
+            filteredExperiences.map((exp) => (
+              <div key={exp.id} className="feed-card">
+                <div className="feed-card-top">
+                  <div className="feed-avatar" style={{ background: exp.avatarColor }}>{exp.initials}</div>
+                  <div className="feed-meta">
+                    <div className="feed-name">
+                      {exp.name} <span style={{ color: 'var(--text3)', fontWeight: 400 }}>{exp.school}</span>
+                    </div>
+                    <div className="feed-detail">{exp.roleCompany}</div>
                   </div>
-                  <div className="feed-detail">{exp.roleCompany}</div>
+                  <div className="feed-time">{exp.timeAgo}</div>
                 </div>
-                <div className="feed-time">{exp.timeAgo}</div>
+                <div className={`outcome-strip ${exp.outcomeClass}`}>{exp.outcomeText}</div>
+                <div className="feed-body">
+                  {exp.body}
+                </div>
+                <div className="tag-row">
+                  {exp.tags.map((tag, idx) => (
+                    <span key={idx} className={`tag ${tag.className}`}>{tag.text}</span>
+                  ))}
+                </div>
+                <div className="feed-actions">
+                  <span className="feed-action">❤️ {exp.likes}</span>
+                  <span className="feed-action">💬 {exp.comments} comments</span>
+                  <span className="feed-action">🔖 Save</span>
+                  <span className="feed-action">↗ Share</span>
+                </div>
               </div>
-              <div className={`outcome-strip ${exp.outcomeClass}`}>{exp.outcomeText}</div>
-              <div className="feed-body">
-                {exp.body}
-              </div>
-              <div className="tag-row">
-                {exp.tags.map((tag, idx) => (
-                  <span key={idx} className={`tag ${tag.className}`}>{tag.text}</span>
-                ))}
-              </div>
-              <div className="feed-actions">
-                <span className="feed-action">❤️ {exp.likes}</span>
-                <span className="feed-action">💬 {exp.comments} comments</span>
-                <span className="feed-action">🔖 Save</span>
-                <span className="feed-action">↗ Share</span>
-              </div>
+            ))
+          ) : (
+            <div style={{ textAlign: 'center', padding: '40px 20px', color: 'var(--text3)' }}>
+              <div style={{ fontSize: 40, marginBottom: 12 }}>🔍</div>
+              <p>No experiences found matching your search.</p>
             </div>
-          ))}
+          )}
         </div>
 
         <div className="right-panel">
