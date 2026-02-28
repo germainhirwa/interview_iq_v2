@@ -207,6 +207,15 @@ function useLandingEffects() {
     }, 1000)
     return () => window.clearInterval(id)
   }, [])
+
+  useEffect(() => {
+    // Auth code fail-safe: if we land on / with a code, forward to the callback
+    const params = new URLSearchParams(window.location.search)
+    const code = params.get('code')
+    if (code) {
+      window.location.href = `/auth/callback?code=${code}`
+    }
+  }, [])
 }
 
 export default function LandingPage() {
@@ -996,9 +1005,9 @@ export default function LandingPage() {
                   style={
                     emailError
                       ? {
-                          borderColor: 'var(--red)',
-                          boxShadow: '0 0 0 3px rgba(248,113,113,0.15)',
-                        }
+                        borderColor: 'var(--red)',
+                        boxShadow: '0 0 0 3px rgba(248,113,113,0.15)',
+                      }
                       : undefined
                   }
                 />
