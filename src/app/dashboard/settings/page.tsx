@@ -218,9 +218,9 @@ export default function SettingsPage() {
               </div>
             </div>
             {!isPremium && (
-              <button className="premium-upgrade-btn" style={{ width: '100%' }}>
-                👑 Request Premium Access
-              </button>
+              <a href={`/api/checkout?products=${process.env.NEXT_PUBLIC_POLAR_PRODUCT_ID || ''}`} className="premium-upgrade-btn" style={{ width: '100%', display: 'inline-block', textAlign: 'center', textDecoration: 'none', boxSizing: 'border-box' }}>
+                👑 Upgrade to Premium
+              </a>
             )}
           </div>
 

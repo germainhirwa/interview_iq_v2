@@ -30,9 +30,9 @@ export default function PremiumGate({ featureName, featureIcon, description, bul
         </ul>
 
         <div className="premium-gate-actions">
-          <button className="premium-upgrade-btn">
-            ✨ Upgrade to Premium — Free During Beta
-          </button>
+          <a href={`/api/checkout?products=${process.env.NEXT_PUBLIC_POLAR_PRODUCT_ID || ''}`} className="premium-upgrade-btn">
+            ✨ Upgrade to Premium
+          </a>
           <Link href="/dashboard" className="premium-back-link">
             ← Back to Dashboard
           </Link>

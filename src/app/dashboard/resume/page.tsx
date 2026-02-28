@@ -1,7 +1,8 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import PremiumGate from '@/components/PremiumGate'
+import { createClient } from '@/lib/supabase/client'
 
 const SAMPLE_FEEDBACK = [
   { section: 'Summary / Objective', score: 72, status: 'warn', msg: 'Objective statement is generic. Tailor it to the specific role and show immediate value.' },
@@ -28,11 +29,30 @@ const CHECKLIST = [
 ]
 
 export default function ResumeCheckPage() {
-  // In a real app, isPremium would come from a server component and be passed as prop.
-  // For now, default false for demo.
-  const isPremium = false
+  const [isPremium, setIsPremium] = useState(false)
+  const supabase = createClient()
 
-  const [uploaded, setUploaded] = useState(false)
+  useEffect(() => {
+    async function checkPremium() {
+      const { data: { user } } = await supabase.auth.getUser()
+      if (user) {
+        const { data: profile } = await supabase
+          .from('profiles')
+          .select('is_premium')
+          .eq('id', user.id)
+          .single()
+
+        if (profile) {
+          setIsPremium(profile.is_premium || false)
+        }
+      }
+    }
+    checkPremium()
+  }, [])
+
+  const [isUploading, setIsUploading] = useState(false)
+  const [uploadProgress, setUploadProgress] = useState(0)
+  const [fileName, setFileName] = useState<string | null>(null)
   const [dragging, setDragging] = useState(false)
 
   const overallScore = Math.round(
@@ -41,7 +61,40 @@ export default function ResumeCheckPage() {
 
   const scoreColor =
     overallScore >= 85 ? 'var(--green)' :
-    overallScore >= 70 ? 'var(--yellow)' : 'var(--red)'
+      overallScore >= 70 ? 'var(--yellow)' : 'var(--red)'
+
+  const handleFile = (file: File) => {
+    if (!file) return;
+    setFileName(file.name);
+    setIsUploading(true);
+    setUploadProgress(0);
+
+    // Simulate upload progress
+    const interval = setInterval(() => {
+      setUploadProgress(prev => {
+        if (prev >= 100) {
+          clearInterval(interval);
+          setIsUploading(false);
+          return 100;
+        }
+        return prev + 10;
+      });
+    }, 200);
+  }
+
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    setDragging(false);
+    if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+      handleFile(e.dataTransfer.files[0]);
+    }
+  }
+
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      handleFile(e.target.files[0]);
+    }
+  }
 
   return (
     <div className="page active" style={{ position: 'relative' }}>
@@ -56,23 +109,41 @@ export default function ResumeCheckPage() {
       </div>
 
       {/* Upload area */}
-      {!uploaded ? (
+      {!fileName && !isUploading ? (
         <div
           className={`resume-upload-zone ${dragging ? 'dragging' : ''}`}
           onDragOver={e => { e.preventDefault(); setDragging(true) }}
           onDragLeave={() => setDragging(false)}
-          onDrop={e => { e.preventDefault(); setDragging(false); setUploaded(true) }}
-          onClick={() => setUploaded(true)}
+          onDrop={handleDrop}
+          onClick={() => document.getElementById('resume-upload-input')?.click()}
+          style={{ cursor: 'pointer' }}
         >
           <div className="resume-upload-icon">📄</div>
           <div className="resume-upload-title">Drop your resume here or click to upload</div>
           <div className="resume-upload-sub">PDF format · Max 5MB · We analyze it instantly</div>
           <button className="top-btn primary" style={{ marginTop: 16 }}>Choose File</button>
+          <input
+            type="file"
+            id="resume-upload-input"
+            style={{ display: 'none' }}
+            accept=".pdf"
+            onChange={handleFileSelect}
+          />
+        </div>
+      ) : isUploading ? (
+        <div className="resume-uploaded-strip" style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: 10 }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%', fontSize: 14 }}>
+            <span>Uploading {fileName}...</span>
+            <span>{uploadProgress}%</span>
+          </div>
+          <div className="resume-score-bar" style={{ width: '100%', height: 6, margin: 0 }}>
+            <div className="resume-score-fill" style={{ width: `${uploadProgress}%`, background: 'var(--accent)' }} />
+          </div>
         </div>
       ) : (
         <div className="resume-uploaded-strip">
-          <span>✅ resume_final_v3.pdf</span>
-          <button className="filter-btn" style={{ fontSize: 12 }} onClick={() => setUploaded(false)}>
+          <span>✅ {fileName}</span>
+          <button className="filter-btn" style={{ fontSize: 12 }} onClick={() => { setFileName(null); setUploadProgress(0); }}>
             Upload Another
           </button>
         </div>

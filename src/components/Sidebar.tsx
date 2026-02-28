@@ -2,6 +2,8 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import { useState } from 'react'
+import ReportBugModal from './ReportBugModal'
 
 interface Profile {
   display_name: string | null
@@ -25,8 +27,8 @@ const insightItems = [
 ]
 
 const youItems = [
-  { href: '/dashboard/applications', icon: '🎯', label: 'My Applications' },
-  { href: '/dashboard/saved', icon: '⭐', label: 'Saved' },
+  { href: '#', icon: '🎯', label: 'My Applications', disabled: true },
+  { href: '#', icon: '⭐', label: 'Saved', disabled: true },
   { href: '/dashboard/resume', icon: '📄', label: 'Resume Check', premium: true },
 ]
 
@@ -39,6 +41,7 @@ function getInitials(name: string | null | undefined): string {
 
 export default function Sidebar({ profile }: { profile: Profile | null }) {
   const pathname = usePathname()
+  const [isBugModalOpen, setIsBugModalOpen] = useState(false)
 
   const isActive = (href: string) => {
     if (href === '/dashboard') return pathname === '/dashboard'
@@ -59,96 +62,116 @@ export default function Sidebar({ profile }: { profile: Profile | null }) {
   ].filter(Boolean).join(' · ')
 
   return (
-    <nav className="sidebar">
-      <div className="sidebar-logo">
-        <Link href="/" className="logo-mark">
-          <div className="logo-icon">IQ</div>
-          <div className="logo-text">InterviewIQ</div>
-        </Link>
-      </div>
-
-      <div className="sidebar-section">
-        <div className="sidebar-label">Main</div>
-        {mainNavItems.map(item => (
-          <Link
-            key={item.href}
-            href={item.href}
-            className={'nav-item' + (isActive(item.href) ? ' active' : '')}
-          >
-            <span className="icon">{item.icon}</span>
-            {item.label}
-            {item.badge && <span className="nav-badge">{item.badge}</span>}
-          </Link>
-        ))}
-      </div>
-
-      <div className="sidebar-section">
-        <div className="sidebar-label">Insights</div>
-        {insightItems.map(item => (
-          <Link
-            key={item.href}
-            href={item.href}
-            className={'nav-item' + (isActive(item.href) ? ' active' : '') + (item.premium && !isPremium ? ' nav-item-premium' : '')}
-          >
-            <span className="icon">{item.icon}</span>
-            {item.label}
-            {item.premium && !isPremium && (
-              <span className="nav-crown">👑</span>
-            )}
-          </Link>
-        ))}
-      </div>
-
-      <div className="sidebar-section">
-        <div className="sidebar-label">You</div>
-        {youItems.map(item => (
-          <Link
-            key={item.href}
-            href={item.href}
-            className={'nav-item' + (isActive(item.href) ? ' active' : '') + (item.premium && !isPremium ? ' nav-item-premium' : '')}
-          >
-            <span className="icon">{item.icon}</span>
-            {item.label}
-            {item.premium && !isPremium && (
-              <span className="nav-crown">👑</span>
-            )}
-          </Link>
-        ))}
-      </div>
-
-      {!isPremium && (
-        <div style={{ padding: '0 16px', marginBottom: 16 }}>
-          <Link href="/dashboard/invite" style={{
-            display: 'block',
-            background: 'linear-gradient(135deg, var(--accent), var(--accent2))',
-            color: 'white',
-            borderRadius: 12,
-            padding: '12px 14px',
-            textDecoration: 'none',
-            fontSize: 13,
-            fontWeight: 500,
-            boxShadow: '0 4px 12px rgba(108,99,255,0.2)',
-          }}>
-            <div style={{ fontSize: 18, marginBottom: 4 }}>🎁</div>
-            <div style={{ fontWeight: 600, marginBottom: 2 }}>Unlock Premium</div>
-            <div style={{ opacity: 0.9, fontSize: 11, lineHeight: 1.4 }}>Invite 5 friends to access all features.</div>
+    <>
+      <nav className="sidebar">
+        <div className="sidebar-logo">
+          <Link href="/" className="logo-mark">
+            <div className="logo-icon">IQ</div>
+            <div className="logo-text">InterviewIQ</div>
           </Link>
         </div>
-      )}
 
-      <div className="sidebar-bottom">
-        <div className="user-card">
-          <div className="user-avatar">{getInitials(profile?.display_name)}</div>
-          <div className="user-info">
-            <div className="user-name" style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
-              {displayName}
-              {isPremium && <span className="premium-badge-sm">✨</span>}
-            </div>
-            <div className="user-school">{schoolLine}</div>
+        <div className="sidebar-section">
+          <div className="sidebar-label">Main</div>
+          {mainNavItems.map(item => (
+            <Link
+              key={item.href}
+              href={item.href}
+              className={'nav-item' + (isActive(item.href) ? ' active' : '')}
+            >
+              <span className="icon">{item.icon}</span>
+              {item.label}
+              {item.badge && <span className="nav-badge">{item.badge}</span>}
+            </Link>
+          ))}
+        </div>
+
+        <div className="sidebar-section">
+          <div className="sidebar-label">Insights</div>
+          {insightItems.map(item => (
+            <Link
+              key={item.href}
+              href={item.href}
+              className={'nav-item' + (isActive(item.href) ? ' active' : '') + (item.premium && !isPremium ? ' nav-item-premium' : '')}
+            >
+              <span className="icon">{item.icon}</span>
+              {item.label}
+              {item.premium && !isPremium && (
+                <span className="nav-crown">👑</span>
+              )}
+            </Link>
+          ))}
+        </div>
+
+        <div className="sidebar-section">
+          <div className="sidebar-label">You</div>
+          {youItems.map(item => {
+            const disabledStyle = item.disabled ? { opacity: 0.4, filter: 'blur(1px)', pointerEvents: 'none' as const, cursor: 'not-allowed' } : {};
+            return (
+              <Link
+                key={item.label} // use label as key since hrefs might be identical '#'
+                href={item.href}
+                className={'nav-item' + (isActive(item.href) ? ' active' : '') + (item.premium && !isPremium ? ' nav-item-premium' : '')}
+                style={disabledStyle}
+                onClick={item.disabled ? (e) => e.preventDefault() : undefined}
+              >
+                <span className="icon">{item.icon}</span>
+                {item.label}
+                {item.premium && !isPremium && (
+                  <span className="nav-crown">👑</span>
+                )}
+              </Link>
+            )
+          })}
+        </div>
+
+        {!isPremium && (
+          <div style={{ padding: '0 16px', marginBottom: 16 }}>
+            <Link href="/dashboard/invite" style={{
+              display: 'block',
+              background: 'linear-gradient(135deg, var(--accent), var(--accent2))',
+              color: 'white',
+              borderRadius: 12,
+              padding: '12px 14px',
+              textDecoration: 'none',
+              fontSize: 13,
+              fontWeight: 500,
+              boxShadow: '0 4px 12px rgba(108,99,255,0.2)',
+            }}>
+              <div style={{ fontSize: 18, marginBottom: 4 }}>🎁</div>
+              <div style={{ fontWeight: 600, marginBottom: 2 }}>Unlock Premium</div>
+              <div style={{ opacity: 0.9, fontSize: 11, lineHeight: 1.4 }}>Invite 5 friends to access all features.</div>
+            </Link>
           </div>
-          <Link href="/dashboard/settings" style={{ color: 'var(--text3)', fontSize: 12 }}>⚙️</Link>
+        )}
+
+        <div className="sidebar-bottom">
+          <div
+            className="nav-item"
+            style={{ marginBottom: 12, cursor: 'pointer', color: 'var(--text2)' }}
+            onClick={() => setIsBugModalOpen(true)}
+          >
+            <span className="icon">🐛</span>
+            Report a bug
+          </div>
+          <div className="user-card">
+            <div className="user-avatar">{getInitials(profile?.display_name)}</div>
+            <div className="user-info">
+              <div className="user-name" style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
+                {displayName}
+                {isPremium && <span className="premium-badge-sm">✨</span>}
+              </div>
+              <div className="user-school">{schoolLine}</div>
+            </div>
+            <Link href="/dashboard/settings" style={{ color: 'var(--text3)', fontSize: 12 }}>⚙️</Link>
+          </div>
         </div>
-      </div>
-    </nav>
+      </nav>
+
+      <ReportBugModal
+        isOpen={isBugModalOpen}
+        onClose={() => setIsBugModalOpen(false)}
+      />
+    </>
   )
 }

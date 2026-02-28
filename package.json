@@ -10,6 +10,9 @@
     "types": "npx supabase gen types typescript --project-id owthbkkvfeovkrodurbs --schema public > database.types.ts"
   },
   "dependencies": {
+    "@polar-sh/nextjs": "^0.9.3",
+    "@polar-sh/sdk": "^0.45.1",
+    "@polar-sh/supabase": "^0.4.2",
     "@supabase/ssr": "^0.8.0",
     "@supabase/supabase-js": "^2.98.0",
     "@types/uuid": "^10.0.0",
@@ -34,5 +37,8 @@
     "tailwindcss": "^4",
     "tsx": "^4.21.0",
     "typescript": "^5"
+  },
+  "overrides": {
+    "@polar-sh/sdk": "^0.45.1"
   }
 }

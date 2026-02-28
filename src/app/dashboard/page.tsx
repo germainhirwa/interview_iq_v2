@@ -3,6 +3,7 @@
 
 
 import Link from 'next/link'
+import { mockExperiences } from '@/data/mockExperiences'
 
 export default async function DashboardHome() {
 
@@ -28,7 +29,9 @@ export default async function DashboardHome() {
           <div className="invite-dot">3</div>
           <div className="invite-dot">4</div>
           <div className="invite-dot">5</div>
-          <button className="top-btn primary" style={{ marginLeft: 10, whiteSpace: 'nowrap' }}>Invite Friends</button>
+          <Link href="/dashboard/invite" passHref>
+            <button className="top-btn primary" style={{ marginLeft: 10, whiteSpace: 'nowrap' }}>Invite Friends</button>
+          </Link>
         </div>
       </div>
 
@@ -62,84 +65,35 @@ export default async function DashboardHome() {
             <Link href="/dashboard/feed" className="section-link">View all →</Link>
           </div>
 
-          <div className="feed-card">
-            <div className="feed-card-top">
-              <div className="feed-avatar" style={{ background: 'linear-gradient(135deg,#6c63ff,#a78bfa)' }}>JS</div>
-              <div className="feed-meta">
-                <div className="feed-name">Jordan S. <span style={{ color: 'var(--text3)', fontWeight: 400 }}> · MIT · CS &apos;25</span></div>
-                <div className="feed-detail">Software Engineer Intern → Google</div>
+          {mockExperiences.map((exp) => (
+            <div key={exp.id} className="feed-card">
+              <div className="feed-card-top">
+                <div className="feed-avatar" style={{ background: exp.avatarColor }}>{exp.initials}</div>
+                <div className="feed-meta">
+                  <div className="feed-name">
+                    {exp.name} <span style={{ color: 'var(--text3)', fontWeight: 400 }}>{exp.school}</span>
+                  </div>
+                  <div className="feed-detail">{exp.roleCompany}</div>
+                </div>
+                <div className="feed-time">{exp.timeAgo}</div>
               </div>
-              <div className="feed-time">2h ago</div>
-            </div>
-            <div className="outcome-strip outcome-offer">🎉 Received Offer — $55/hr + $10K housing + $5K relocation</div>
-            <div className="feed-body">
-              Just finished the <strong>Google L3 intern loop</strong> — 3 coding rounds + 1 Googleyness. Final round had a hard DP problem and a medium graph. ~6 weeks from OA to offer. <strong>Key tip:</strong> practice STAR format hard.
-            </div>
-            <div className="tag-row">
-              <span className="tag tag-company">Google</span>
-              <span className="tag tag-offer">Offer</span>
-              <span className="tag tag-topic">Dynamic Programming</span>
-            </div>
-            <div className="feed-actions">
-              <span className="feed-action liked">❤️ 284</span>
-              <span className="feed-action">💬 47 comments</span>
-              <span className="feed-action">🔖 Save</span>
-              <span className="feed-action">↗ Share</span>
-            </div>
-          </div>
-
-          <div className="feed-card">
-            <div className="feed-card-top">
-              <div className="feed-avatar" style={{ background: 'linear-gradient(135deg,#f87171,#fb923c)' }}>MK</div>
-              <div className="feed-meta">
-                <div className="feed-name">Maya K. <span style={{ color: 'var(--text3)', fontWeight: 400 }}> · Stanford · CS &apos;26</span></div>
-                <div className="feed-detail">SWE Intern → Meta</div>
+              <div className={`outcome-strip ${exp.outcomeClass}`}>{exp.outcomeText}</div>
+              <div className="feed-body">
+                {exp.body}
               </div>
-              <div className="feed-time">5h ago</div>
-            </div>
-            <div className="outcome-strip outcome-rej">😔 Rejected after final round — virtual onsite</div>
-            <div className="feed-body">
-              Meta virtual onsite done. 2 coding problems — LRU Cache variant + harder tree problem. <strong>I think I was too slow on problem 2.</strong>
-            </div>
-            <div className="tag-row">
-              <span className="tag tag-company">Meta</span>
-              <span className="tag tag-rej">Rejected</span>
-              <span className="tag tag-topic">LRU Cache</span>
-            </div>
-            <div className="feed-actions">
-              <span className="feed-action">❤️ 189</span>
-              <span className="feed-action">💬 63 comments</span>
-              <span className="feed-action">🔖 Save</span>
-              <span className="feed-action">↗ Share</span>
-            </div>
-          </div>
-
-          <div className="feed-card">
-            <div className="feed-card-top">
-              <div className="feed-avatar" style={{ background: 'linear-gradient(135deg,#34d399,#38bdf8)' }}>AR</div>
-              <div className="feed-meta">
-                <div className="feed-name">Alex R. <span style={{ color: 'var(--text3)', fontWeight: 400 }}> · Carnegie Mellon · CS &apos;25</span></div>
-                <div className="feed-detail">Quant Intern → Jane Street</div>
+              <div className="tag-row">
+                {exp.tags.map((tag, idx) => (
+                  <span key={idx} className={`tag ${tag.className}`}>{tag.text}</span>
+                ))}
               </div>
-              <div className="feed-time">8h ago</div>
+              <div className="feed-actions">
+                <span className="feed-action">❤️ {exp.likes}</span>
+                <span className="feed-action">💬 {exp.comments} comments</span>
+                <span className="feed-action">🔖 Save</span>
+                <span className="feed-action">↗ Share</span>
+              </div>
             </div>
-            <div className="outcome-strip outcome-progress">⏳ In Process — waiting after superday</div>
-            <div className="feed-body">
-              Jane Street superday done. <strong>5 rounds:</strong> mental math warm-up, probability theory deep dive, trading game simulation, market making problem, and a final interview with a partner. The trading game had poker-like mechanics.
-            </div>
-            <div className="tag-row">
-              <span className="tag tag-company">Jane Street</span>
-              <span className="tag tag-oa">In Process</span>
-              <span className="tag tag-topic">Probability</span>
-              <span className="tag tag-topic">Market Making</span>
-            </div>
-            <div className="feed-actions">
-              <span className="feed-action">❤️ 312</span>
-              <span className="feed-action">💬 91 comments</span>
-              <span className="feed-action">🔖 Save</span>
-              <span className="feed-action">↗ Share</span>
-            </div>
-          </div>
+          ))}
         </div>
 
         <div className="right-panel">
@@ -186,11 +140,11 @@ export default async function DashboardHome() {
             <div className="section-title" style={{ marginBottom: 14 }}>📊 Offer Stats This Week</div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
               {[
-                { name: 'Google',    pay: '$55/hr', width: '100%', cls: 'percent-fill-green' },
-                { name: 'Meta',      pay: '$52/hr', width: '94%',  cls: 'percent-fill-green' },
-                { name: 'Amazon',    pay: '$48/hr', width: '87%',  cls: 'percent-fill-purple' },
-                { name: 'Microsoft', pay: '$46/hr', width: '83%',  cls: 'percent-fill-purple' },
-                { name: 'Stripe',    pay: '$60/hr', width: '100%', cls: 'percent-fill-yellow' },
+                { name: 'Google', pay: '$55/hr', width: '100%', cls: 'percent-fill-green' },
+                { name: 'Meta', pay: '$52/hr', width: '94%', cls: 'percent-fill-green' },
+                { name: 'Amazon', pay: '$48/hr', width: '87%', cls: 'percent-fill-purple' },
+                { name: 'Microsoft', pay: '$46/hr', width: '83%', cls: 'percent-fill-purple' },
+                { name: 'Stripe', pay: '$60/hr', width: '100%', cls: 'percent-fill-yellow' },
               ].map(item => (
                 <div key={item.name}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 13 }}>
