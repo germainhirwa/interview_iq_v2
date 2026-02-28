@@ -3,8 +3,14 @@ import { NextResponse } from 'next/server'
 import { cookies } from 'next/headers'
 
 export async function GET(request: Request) {
-  const { searchParams, origin } = new URL(request.url)
+  const requestUrl = new URL(request.url)
+  const { searchParams } = requestUrl
   const code = searchParams.get('code')
+
+  // Use public URL if available, fallback to headers for robust Vercel support
+  const protocol = request.headers.get('x-forwarded-proto') || requestUrl.protocol.replace(':', '')
+  const host = request.headers.get('host') || requestUrl.host
+  const origin = `${protocol}://${host}`
 
   if (code) {
     const supabase = await createClient()
