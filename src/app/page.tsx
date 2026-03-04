@@ -720,122 +720,123 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* TESTIMONIALS */}
-      <section className="testimonials-section">
-        <div className="section-eyebrow reveal">
-          <span className="eyebrow-line" />
-          Student voices
-        </div>
-        <h2 className="section-h2 reveal reveal-delay-1">
-          Real students.
-          <br />
-          Real results.
-        </h2>
-        <div className="testimonials-grid">
-          <div className="testi-card reveal">
-            <div className="testi-quote">"</div>
-            <div className="testi-text">
-              I spent 3 weeks prepping LC for Meta — and almost missed that they weight behavioral{' '}
-              <strong>way more than most people think</strong>. One InterviewIQ post saved my final round.
-            </div>
-            <div className="testi-footer">
-              <div className="testi-av" style={{ background: 'linear-gradient(135deg,#6c63ff,#a78bfa)' }}>
-                JS
-              </div>
-              <div>
-                <div className="testi-name">Jordan S.</div>
-                <div className="testi-role">MIT · CS &apos;25</div>
-              </div>
-              <span className="testi-company">Google Offer ✓</span>
-            </div>
-          </div>
-          <div className="testi-card reveal reveal-delay-1">
-            <div className="testi-quote">"</div>
-            <div className="testi-text">
-              The compensation data alone is worth it. I was about to accept $44/hr — then I checked InterviewIQ and saw{' '}
-              <strong>three competing offers averaging $52</strong>. I negotiated up.
-            </div>
-            <div className="testi-footer">
-              <div className="testi-av" style={{ background: 'linear-gradient(135deg,#34d399,#22d3ee)' }}>
-                LT
-              </div>
-              <div>
-                <div className="testi-name">Layla T.</div>
-                <div className="testi-role">Berkeley · CS &apos;25</div>
-              </div>
-              <span className="testi-company">Stripe Offer ✓</span>
-            </div>
-          </div>
-          <div className="testi-card reveal reveal-delay-2">
-            <div className="testi-quote">"</div>
-            <div className="testi-text">
-              I&apos;m a first-gen CS student with zero industry connections. InterviewIQ was <strong>my network</strong>
-              . I knew exactly what to expect at every company before I even applied.
-            </div>
-            <div className="testi-footer">
-              <div className="testi-av" style={{ background: 'linear-gradient(135deg,#fbbf24,#fb923c)' }}>
-                DM
-              </div>
-              <div>
-                <div className="testi-name">DeShawn M.</div>
-                <div className="testi-role">Howard · CS &apos;26</div>
-              </div>
-              <span className="testi-company">Amazon Offer ✓</span>
-            </div>
-          </div>
-          <div className="testi-card reveal reveal-delay-1">
-            <div className="testi-quote">"</div>
-            <div className="testi-text">
-              When the Jane Street OA dropped, someone posted about it within <strong>30 minutes</strong>. I had context
-              on what to expect before I even opened the link.
-            </div>
-            <div className="testi-footer">
-              <div className="testi-av" style={{ background: 'linear-gradient(135deg,#a78bfa,#6c63ff)' }}>
-                PR
-              </div>
-              <div>
-                <div className="testi-name">Priya R.</div>
-                <div className="testi-role">Carnegie Mellon · CS &apos;25</div>
-              </div>
-              <span className="testi-company">Jane St. Offer ✓</span>
-            </div>
-          </div>
-          <div className="testi-card reveal reveal-delay-2">
-            <div className="testi-quote">"</div>
-            <div className="testi-text">
-              I had 6 rejections before I found this platform. I changed my prep strategy based on what I read here.{' '}
-              <strong>Next cycle I had 4 offers.</strong>
-            </div>
-            <div className="testi-footer">
-              <div className="testi-av" style={{ background: 'linear-gradient(135deg,#f87171,#fb923c)' }}>
-                KN
-              </div>
-              <div>
-                <div className="testi-name">Kwame N.</div>
-                <div className="testi-role">Georgia Tech · CS &apos;25</div>
-              </div>
-              <span className="testi-company">Netflix Offer ✓</span>
-            </div>
-          </div>
-          <div className="testi-card reveal reveal-delay-3">
-            <div className="testi-quote">"</div>
-            <div className="testi-text">
-              Every CS student I know refreshes this during recruiting season. It&apos;s the{' '}
-              <strong>only platform that feels like it&apos;s actually for us</strong>, not for recruiters.
-            </div>
-            <div className="testi-footer">
-              <div className="testi-av" style={{ background: 'linear-gradient(135deg,#22d3ee,#34d399)' }}>
-                SC
-              </div>
-              <div>
-                <div className="testi-name">Sofia C.</div>
-                <div className="testi-role">UCLA · CS &apos;26</div>
-              </div>
-              <span className="testi-company">Microsoft Offer ✓</span>
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* TESTIMONIALS 
+724:       <section className="testimonials-section">
+725:         <div className="section-eyebrow reveal">
+726:           <span className="eyebrow-line" />
+727:           Student voices
+728:         </div>
+729:         <h2 className="section-h2 reveal reveal-delay-1">
+730:           Real students.
+731:           <br />
+732:           Real results.
+733:         </h2>
+734:         <div className="testimonials-grid">
+735:           <div className="testi-card reveal">
+736:             <div className="testi-quote">"</div>
+737:             <div className="testi-text">
+738:               I spent 3 weeks prepping LC for Meta — and almost missed that they weight behavioral{' '}
+739:               <strong>way more than most people think</strong>. One InterviewIQ post saved my final round.
+740:             </div>
+741:             <div className="testi-footer">
+742:               <div className="testi-av" style={{ background: 'linear-gradient(135deg,#6c63ff,#a78bfa)' }}>
+743:                 JS
+744:               </div>
+745:               <div>
+746:                 <div className="testi-name">Jordan S.</div>
+747:                 <div className="testi-role">MIT · CS &apos;25</div>
+748:               </div>
+749:               <span className="testi-company">Google Offer ✓</span>
+750:             </div>
+751:           </div>
+752:           <div className="testi-card reveal reveal-delay-1">
+753:             <div className="testi-quote">"</div>
+754:             <div className="testi-text">
+755:               The compensation data alone is worth it. I was about to accept $44/hr — then I checked InterviewIQ and saw{' '}
+756:               <strong>three competing offers averaging $52</strong>. I negotiated up.
+757:             </div>
+758:             <div className="testi-footer">
+759:               <div className="testi-av" style={{ background: 'linear-gradient(135deg,#34d399,#22d3ee)' }}>
+760:                 LT
+761:               </div>
+762:               <div>
+763:                 <div className="testi-name">Layla T.</div>
+764:                 <div className="testi-role">Berkeley · CS &apos;25</div>
+765:               </div>
+766:               <span className="testi-company">Stripe Offer ✓</span>
+767:             </div>
+768:           </div>
+769:           <div className="testi-card reveal reveal-delay-2">
+770:             <div className="testi-quote">"</div>
+771:             <div className="testi-text">
+772:               I&apos;m a first-gen CS student with zero industry connections. InterviewIQ was <strong>my network</strong>
+773:               . I knew exactly what to expect at every company before I even applied.
+774:             </div>
+775:             <div className="testi-footer">
+776:               <div className="testi-av" style={{ background: 'linear-gradient(135deg,#fbbf24,#fb923c)' }}>
+777:                 DM
+778:               </div>
+779:               <div>
+814:                 <div className="testi-name">DeShawn M.</div>
+815:                 <div className="testi-role">Howard · CS &apos;26</div>
+816:               </div>
+817:               <span className="testi-company">Amazon Offer ✓</span>
+818:             </div>
+819:           </div>
+820:           <div className="testi-card reveal reveal-delay-1">
+821:             <div className="testi-quote">"</div>
+822:             <div className="testi-text">
+823:               When the Jane Street OA dropped, someone posted about it within <strong>30 minutes</strong>. I had context
+824:               on what to expect before I even opened the link.
+825:             </div>
+826:             <div className="testi-footer">
+827:               <div className="testi-av" style={{ background: 'linear-gradient(135deg,#a78bfa,#6c63ff)' }}>
+828:                 PR
+829:               </div>
+830:               <div>
+831:                 <div className="testi-name">Priya R.</div>
+832:                 <div className="testi-role">Carnegie Mellon · CS &apos;25</div>
+833:               </div>
+834:               <span className="testi-company">Jane St. Offer ✓</span>
+835:             </div>
+836:           </div>
+837:           <div className="testi-card reveal reveal-delay-2">
+838:             <div className="testi-quote">"</div>
+839:             <div className="testi-text">
+840:               I had 6 rejections before I found this platform. I changed my prep strategy based on what I read here.{' '}
+841:               <strong>Next cycle I had 4 offers.</strong>
+842:             </div>
+843:             <div className="testi-footer">
+844:               <div className="testi-av" style={{ background: 'linear-gradient(135deg,#f87171,#fb923c)' }}>
+845:                 KN
+846:               </div>
+847:               <div>
+848:                 <div className="testi-name">Kwame N.</div>
+849:                 <div className="testi-role">Georgia Tech · CS &apos;25</div>
+850:               </div>
+851:               <span className="testi-company">Netflix Offer ✓</span>
+852:             </div>
+853:           </div>
+854:           <div className="testi-card reveal reveal-delay-3">
+855:             <div className="testi-quote">"</div>
+856:             <div className="testi-text">
+857:               Every CS student I know refreshes this during recruiting season. It&apos;s the{' '}
+858:               <strong>only platform that feels like it&apos;s actually for us</strong>, not for recruiters.
+859:             </div>
+860:             <div className="testi-footer">
+861:               <div className="testi-av" style={{ background: 'linear-gradient(135deg,#22d3ee,#34d399)' }}>
+862:                 SC
+863:               </div>
+864:               <div>
+865:                 <div className="testi-name">Sofia C.</div>
+866:                 <div className="testi-role">UCLA · CS &apos;26</div>
+867:               </div>
+868:               <span className="testi-company">Microsoft Offer ✓</span>
+869:             </div>
+870:           </div>
+871:         </div>
+872:       </section>
+873:       */}
 
       {/* PRICING / VIRAL */}
       <section className="viral-section" id="pricing">
