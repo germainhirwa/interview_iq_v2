@@ -1,8 +1,6 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
-import Sidebar from '@/components/Sidebar'
-import Topbar from '@/components/Topbar'
-import CursorEffect from '@/components/CursorEffect'
+import DashboardShell from '@/components/DashboardShell'
 
 export default async function DashboardLayout({
   children,
@@ -25,13 +23,8 @@ export default async function DashboardLayout({
     .single()
 
   return (
-    <div className="app">
-      <CursorEffect />
-      <Sidebar profile={profile} />
-      <div className="main">
-        <Topbar user={user} />
-        {children}
-      </div>
-    </div>
+    <DashboardShell user={user} profile={profile}>
+      {children}
+    </DashboardShell>
   )
 }

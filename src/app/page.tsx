@@ -224,6 +224,7 @@ export default function LandingPage() {
   const [email, setEmail] = useState('')
   const [emailError, setEmailError] = useState(false)
   const [emailSuccess, setEmailSuccess] = useState(false)
+  const [menuOpen, setMenuOpen] = useState(false)
 
   const handleSignup = (e: React.FormEvent) => {
     e.preventDefault()
@@ -235,11 +236,13 @@ export default function LandingPage() {
     setEmailSuccess(true)
   }
 
+  const closeMenu = () => setMenuOpen(false)
+
   return (
     <>
       {/* NAV */}
       <nav id="navbar">
-        <a className="nav-logo" href="#">
+        <a className="nav-logo" href="#" onClick={closeMenu}>
           <div className="logo-cube">IQ</div>
           InterviewIQ
         </a>
@@ -257,7 +260,29 @@ export default function LandingPage() {
             Join Free →
           </Link>
         </div>
+        {/* Mobile hamburger */}
+        <button
+          className="nav-hamburger"
+          onClick={() => setMenuOpen(o => !o)}
+          aria-label={menuOpen ? 'Close menu' : 'Open menu'}
+          aria-expanded={menuOpen}
+        >
+          {menuOpen ? '✕' : '☰'}
+        </button>
       </nav>
+
+      {/* Mobile nav dropdown */}
+      <div className={`nav-mobile-menu${menuOpen ? ' open' : ''}`} aria-hidden={!menuOpen}>
+        <a href="#features" onClick={closeMenu}>Features</a>
+        <a href="#how" onClick={closeMenu}>How It Works</a>
+        <a href="#pricing" onClick={closeMenu}>Access</a>
+        <Link href="/login" onClick={closeMenu}>Companies</Link>
+        <div className="nav-mobile-divider" />
+        <div className="nav-mobile-cta">
+          <Link href="/login" className="btn-ghost" onClick={closeMenu}>Log in</Link>
+          <Link href="/login" className="btn-hero" onClick={closeMenu}>Join Free →</Link>
+        </div>
+      </div>
 
       {/* HERO */}
       <section className="hero">
@@ -736,7 +761,7 @@ export default function LandingPage() {
           <div className="testi-card reveal">
             <div className="testi-quote">"</div>
             <div className="testi-text">
-              I spent 3 weeks prepping LC for Meta — and almost missed that they weight behavioral{' '}
+              I spent 3 weeks prepping LC for Meta and almost missed that they weight behavioral{' '}
               <strong>way more than most people think</strong>. One InterviewIQ post saved my final round.
             </div>
             <div className="testi-footer">

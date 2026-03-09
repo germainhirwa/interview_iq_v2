@@ -13,6 +13,12 @@ interface Profile {
   is_premium: boolean | null
 }
 
+interface SidebarProps {
+  profile: Profile | null
+  isOpen?: boolean
+  onClose?: () => void
+}
+
 const mainNavItems = [
   { href: '/dashboard', icon: '🏠', label: 'Home' },
   { href: '/dashboard/feed', icon: '📡', label: 'Feed', badge: '24' },
@@ -39,7 +45,7 @@ function getInitials(name: string | null | undefined): string {
   return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase()
 }
 
-export default function Sidebar({ profile }: { profile: Profile | null }) {
+export default function Sidebar({ profile, isOpen = false, onClose }: SidebarProps) {
   const pathname = usePathname()
   const [isBugModalOpen, setIsBugModalOpen] = useState(false)
 
@@ -48,24 +54,37 @@ export default function Sidebar({ profile }: { profile: Profile | null }) {
     return pathname.startsWith(href)
   }
 
+  // Close sidebar on nav click (mobile UX)
+  const handleNavClick = () => {
+    onClose?.()
+  }
+
   const displayName = profile?.display_name || 'Student'
   const school = profile?.school || 'University'
   const gradYear = profile?.graduation_year
   const major = profile?.major
   const isPremium = profile?.is_premium ?? false
 
-  // Format: "MIT · CS '26" or just "MIT" if no major/year
   const schoolLine = [
     school,
-    major ? major.split(' ')[0] : null,        // first word of major e.g. "Computer"
+    major ? major.split(' ')[0] : null,
     gradYear ? `'${String(gradYear).slice(2)}` : null,
   ].filter(Boolean).join(' · ')
 
   return (
     <>
-      <nav className="sidebar">
+      <nav className={`sidebar${isOpen ? ' open' : ''}`}>
+        {/* Mobile close button */}
+        <button
+          className="sidebar-close-btn"
+          onClick={onClose}
+          aria-label="Close menu"
+        >
+          ✕
+        </button>
+
         <div className="sidebar-logo">
-          <Link href="/" className="logo-mark">
+          <Link href="/" className="logo-mark" onClick={handleNavClick}>
             <div className="logo-icon">IQ</div>
             <div className="logo-text">InterviewIQ</div>
           </Link>
@@ -78,6 +97,7 @@ export default function Sidebar({ profile }: { profile: Profile | null }) {
               key={item.href}
               href={item.href}
               className={'nav-item' + (isActive(item.href) ? ' active' : '')}
+              onClick={handleNavClick}
             >
               <span className="icon">{item.icon}</span>
               {item.label}
@@ -93,6 +113,7 @@ export default function Sidebar({ profile }: { profile: Profile | null }) {
               key={item.href}
               href={item.href}
               className={'nav-item' + (isActive(item.href) ? ' active' : '') + (item.premium && !isPremium ? ' nav-item-premium' : '')}
+              onClick={handleNavClick}
             >
               <span className="icon">{item.icon}</span>
               {item.label}
@@ -109,11 +130,11 @@ export default function Sidebar({ profile }: { profile: Profile | null }) {
             const disabledStyle = item.disabled ? { opacity: 0.4, filter: 'blur(1px)', pointerEvents: 'none' as const, cursor: 'not-allowed' } : {};
             return (
               <Link
-                key={item.label} // use label as key since hrefs might be identical '#'
+                key={item.label}
                 href={item.href}
                 className={'nav-item' + (isActive(item.href) ? ' active' : '') + (item.premium && !isPremium ? ' nav-item-premium' : '')}
                 style={disabledStyle}
-                onClick={item.disabled ? (e) => e.preventDefault() : undefined}
+                onClick={item.disabled ? (e) => e.preventDefault() : handleNavClick}
               >
                 <span className="icon">{item.icon}</span>
                 {item.label}
@@ -127,7 +148,7 @@ export default function Sidebar({ profile }: { profile: Profile | null }) {
 
         {!isPremium && (
           <div style={{ padding: '0 16px', marginBottom: 16 }}>
-            <Link href="/dashboard/invite" style={{
+            <Link href="/dashboard/invite" onClick={handleNavClick} style={{
               display: 'block',
               background: 'linear-gradient(135deg, var(--accent), var(--accent2))',
               color: 'white',
@@ -149,7 +170,7 @@ export default function Sidebar({ profile }: { profile: Profile | null }) {
           <div
             className="nav-item"
             style={{ marginBottom: 12, cursor: 'pointer', color: 'var(--text2)' }}
-            onClick={() => setIsBugModalOpen(true)}
+            onClick={() => { setIsBugModalOpen(true); onClose?.() }}
           >
             <span className="icon">🐛</span>
             Report a bug
@@ -163,7 +184,7 @@ export default function Sidebar({ profile }: { profile: Profile | null }) {
               </div>
               <div className="user-school">{schoolLine}</div>
             </div>
-            <Link href="/dashboard/settings" style={{ color: 'var(--text3)', fontSize: 12 }}>⚙️</Link>
+            <Link href="/dashboard/settings" onClick={handleNavClick} style={{ color: 'var(--text3)', fontSize: 12 }}>⚙️</Link>
           </div>
         </div>
       </nav>

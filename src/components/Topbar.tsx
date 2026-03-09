@@ -7,9 +7,10 @@ import { createClient } from '@/lib/supabase/client'
 
 interface TopbarProps {
   user: User
+  onMenuOpen?: () => void
 }
 
-export default function Topbar({ user }: TopbarProps) {
+export default function Topbar({ user, onMenuOpen }: TopbarProps) {
   const router = useRouter()
   const searchParams = useSearchParams()
   const pathname = usePathname()
@@ -25,11 +26,9 @@ export default function Topbar({ user }: TopbarProps) {
       } else {
         params.delete('q')
       }
-
-      // Update the URL without a full refresh
       const newUrl = `${pathname}?${params.toString()}`
       router.push(newUrl, { scroll: false })
-    }, 400) // 400ms debounce
+    }, 400)
 
     return () => clearTimeout(timer)
   }, [query, pathname, router, searchParams])
@@ -42,6 +41,15 @@ export default function Topbar({ user }: TopbarProps) {
 
   return (
     <div className="topbar">
+      {/* Mobile hamburger — opens sidebar on small screens */}
+      <button
+        className="topbar-hamburger"
+        onClick={onMenuOpen}
+        aria-label="Open menu"
+      >
+        ☰
+      </button>
+
       <div className="search-wrap">
         <span className="search-icon">🔍</span>
         <input
@@ -52,11 +60,13 @@ export default function Topbar({ user }: TopbarProps) {
           onChange={(e) => setQuery(e.target.value)}
         />
       </div>
+
       <div className="topbar-right">
         <button className="top-btn ghost">🔔</button>
         <button
           className="top-btn primary"
           onClick={() => router.push('/dashboard/feed')}
+          aria-label="Share Experience"
         >
           + Share Experience
         </button>
