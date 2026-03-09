@@ -3,7 +3,6 @@
 import { useState, useCallback } from 'react'
 import Sidebar from './Sidebar'
 import Topbar from './Topbar'
-import CursorEffect from './CursorEffect'
 import type { User } from '@supabase/supabase-js'
 
 interface Profile {
@@ -28,8 +27,6 @@ export default function DashboardShell({ user, profile, children }: DashboardShe
 
     return (
         <div className="app">
-            <CursorEffect />
-
             {/* Backdrop overlay — click to close sidebar on mobile */}
             <div
                 className={`sidebar-overlay${sidebarOpen ? ' active' : ''}`}

@@ -4,15 +4,11 @@ import { useEffect } from 'react'
 
 export default function CursorEffect() {
   useEffect(() => {
-    // Create cursor elements
-    const cursor = document.createElement('div')
-    const ring = document.createElement('div')
-    cursor.id = 'cursor'
-    ring.id = 'cursorRing'
-    cursor.className = 'cursor'
-    ring.className = 'cursor-ring'
-    document.body.appendChild(cursor)
-    document.body.appendChild(ring)
+    // Use existing cursor elements from layout.tsx
+    const cursor = document.getElementById('cursor')
+    const ring = document.getElementById('cursorRing')
+
+    if (!cursor || !ring) return
 
     let mx = 0, my = 0, rx = 0, ry = 0
     let frameId: number
@@ -20,49 +16,51 @@ export default function CursorEffect() {
     const onMove = (e: MouseEvent) => {
       mx = e.clientX
       my = e.clientY
-      cursor.style.left = `${mx - 5}px`
-      cursor.style.top = `${my - 5}px`
+      // Use translate3d for better performance and to avoid layout shifts
+      cursor.style.transform = `translate3d(${mx - 5}px, ${my - 5}px, 0)`
     }
-    document.addEventListener('mousemove', onMove)
+    window.addEventListener('mousemove', onMove)
 
     const animRing = () => {
-      rx += (mx - rx - 18) * 0.12
-      ry += (my - ry - 18) * 0.12
-      ring.style.left = `${rx}px`
-      ring.style.top = `${ry}px`
+      rx += (mx - rx - 18) * 0.15
+      ry += (my - ry - 18) * 0.15
+      ring.style.transform = `translate3d(${rx}px, ${ry}px, 0)`
       frameId = requestAnimationFrame(animRing)
     }
     frameId = requestAnimationFrame(animRing)
 
     // Scale on hover over interactive elements
     const handleEnter = () => {
-      cursor.style.transform = 'scale(2.5)'
-      ring.style.transform = 'scale(0.6)'
+      cursor.style.transform = `translate3d(${mx - 5}px, ${my - 5}px, 0) scale(2.5)`
+      ring.style.transform = `translate3d(${rx}px, ${ry}px, 0) scale(0.6)`
       ring.style.borderColor = 'rgba(124,106,255,0.8)'
     }
     const handleLeave = () => {
-      cursor.style.transform = 'scale(1)'
-      ring.style.transform = 'scale(1)'
+      cursor.style.transform = `translate3d(${mx - 5}px, ${my - 5}px, 0) scale(1)`
+      ring.style.transform = `translate3d(${rx}px, ${ry}px, 0) scale(1)`
       ring.style.borderColor = 'rgba(124,106,255,0.5)'
     }
 
-    // Use event delegation so it works on dynamically rendered elements
-    document.addEventListener('mouseover', (e) => {
+    // Event delegation for stability on dynamic content
+    const onOver = (e: MouseEvent) => {
       if ((e.target as HTMLElement).closest('button, a, input, textarea, select')) {
         handleEnter()
       }
-    })
-    document.addEventListener('mouseout', (e) => {
+    }
+    const onOut = (e: MouseEvent) => {
       if ((e.target as HTMLElement).closest('button, a, input, textarea, select')) {
         handleLeave()
       }
-    })
+    }
+
+    window.addEventListener('mouseover', onOver)
+    window.addEventListener('mouseout', onOut)
 
     return () => {
-      document.removeEventListener('mousemove', onMove)
+      window.removeEventListener('mousemove', onMove)
+      window.removeEventListener('mouseover', onOver)
+      window.removeEventListener('mouseout', onOut)
       cancelAnimationFrame(frameId)
-      cursor.remove()
-      ring.remove()
     }
   }, [])
 

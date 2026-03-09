@@ -1,67 +1,10 @@
-// app/page.tsx  — Landing page (Server Component, no "use client" needed)
-// This replaces your index.html landing page
-
-"use client"
-
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
+import CompanyLogo from '@/components/CompanyLogo'
 
 function useLandingEffects() {
   useEffect(() => {
-    // Custom cursor
-    const cursor = document.getElementById('cursor')
-    const ring = document.getElementById('cursorRing')
-
-    if (cursor && ring) {
-      let mx = 0
-      let my = 0
-      let rx = 0
-      let ry = 0
-
-      const handleMove = (e: MouseEvent) => {
-        mx = e.clientX
-        my = e.clientY
-        cursor.style.left = `${mx - 5}px`
-        cursor.style.top = `${my - 5}px`
-      }
-
-      document.addEventListener('mousemove', handleMove)
-
-      let frameId: number
-      const animRing = () => {
-        rx += (mx - rx - 18) * 0.12
-        ry += (my - ry - 18) * 0.12
-        ring.style.left = `${rx}px`
-        ring.style.top = `${ry}px`
-        frameId = window.requestAnimationFrame(animRing)
-      }
-      frameId = window.requestAnimationFrame(animRing)
-
-      const interactive = Array.from(document.querySelectorAll('button, a, input')) as HTMLElement[]
-      const handleEnter = () => {
-        cursor.style.transform = 'scale(2.5)'
-        ring.style.transform = 'scale(0.6)'
-        ring.style.borderColor = 'rgba(124,106,255,0.8)'
-      }
-      const handleLeave = () => {
-        cursor.style.transform = 'scale(1)'
-        ring.style.transform = 'scale(1)'
-        ring.style.borderColor = 'rgba(124,106,255,0.5)'
-      }
-      interactive.forEach((el) => {
-        el.addEventListener('mouseenter', handleEnter)
-        el.addEventListener('mouseleave', handleLeave)
-      })
-
-      return () => {
-        document.removeEventListener('mousemove', handleMove)
-        window.cancelAnimationFrame(frameId)
-        interactive.forEach((el) => {
-          el.removeEventListener('mouseenter', handleEnter)
-          el.removeEventListener('mouseleave', handleLeave)
-        })
-      }
-    }
+    // (Custom cursor logic removed, now handled by RootLayout)
   }, [])
 
   useEffect(() => {
@@ -417,30 +360,30 @@ export default function LandingPage() {
       <div className="marquee-section">
         <div className="marquee-track">
           {[
-            { emoji: '🔵', name: 'Google', pay: '$55/hr' },
-            { emoji: '🟠', name: 'Amazon', pay: '$48/hr' },
-            { emoji: '🟣', name: 'Stripe', pay: '$60/hr' },
-            { emoji: '🟦', name: 'Meta', pay: '$52/hr' },
-            { emoji: '⚫', name: 'OpenAI', pay: '$65/hr' },
-            { emoji: '🟤', name: 'Jane Street', pay: '$120/hr' },
-            { emoji: '🔴', name: 'Netflix', pay: '$58/hr' },
-            { emoji: '🔷', name: 'Microsoft', pay: '$46/hr' },
-            { emoji: '🟡', name: 'Figma', pay: '$45/hr' },
-            { emoji: '🟢', name: 'Airbnb', pay: '$50/hr' },
+            { name: 'Google', pay: '$55/hr' },
+            { name: 'Amazon', pay: '$48/hr' },
+            { name: 'Stripe', pay: '$60/hr' },
+            { name: 'Meta', pay: '$52/hr' },
+            { name: 'OpenAI', pay: '$65/hr' },
+            { name: 'Jane Street', pay: '$120/hr' },
+            { name: 'Netflix', pay: '$58/hr' },
+            { name: 'Microsoft', pay: '$46/hr' },
+            { name: 'Figma', pay: '$45/hr' },
+            { name: 'Airbnb', pay: '$50/hr' },
             // Duplicate for seamless loop
-            { emoji: '🔵', name: 'Google', pay: '$55/hr' },
-            { emoji: '🟠', name: 'Amazon', pay: '$48/hr' },
-            { emoji: '🟣', name: 'Stripe', pay: '$60/hr' },
-            { emoji: '🟦', name: 'Meta', pay: '$52/hr' },
-            { emoji: '⚫', name: 'OpenAI', pay: '$65/hr' },
-            { emoji: '🟤', name: 'Jane Street', pay: '$120/hr' },
-            { emoji: '🔴', name: 'Netflix', pay: '$58/hr' },
-            { emoji: '🔷', name: 'Microsoft', pay: '$46/hr' },
-            { emoji: '🟡', name: 'Figma', pay: '$45/hr' },
-            { emoji: '🟢', name: 'Airbnb', pay: '$50/hr' },
+            { name: 'Google', pay: '$55/hr' },
+            { name: 'Amazon', pay: '$48/hr' },
+            { name: 'Stripe', pay: '$60/hr' },
+            { name: 'Meta', pay: '$52/hr' },
+            { name: 'OpenAI', pay: '$65/hr' },
+            { name: 'Jane Street', pay: '$120/hr' },
+            { name: 'Netflix', pay: '$58/hr' },
+            { name: 'Microsoft', pay: '$46/hr' },
+            { name: 'Figma', pay: '$45/hr' },
+            { name: 'Airbnb', pay: '$50/hr' },
           ].map((item, i) => (
             <div key={i} className="marquee-item">
-              <span style={{ fontSize: 18 }}>{item.emoji}</span>
+              <CompanyLogo name={item.name} size={24} />
               <span className="m-company">{item.name}</span>
               <span className="m-dot" />
               <span className="m-pay">{item.pay}</span>

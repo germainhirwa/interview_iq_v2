@@ -1,6 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import Link from 'next/link'
 import { mockExperiences, type Experience } from '@/data/mockExperiences'
+import CompanyLogo from '@/components/CompanyLogo'
 
 export default async function DashboardHome({
   searchParams
@@ -137,15 +138,15 @@ export default async function DashboardHome({
           <div className="panel-card">
             <div className="section-title" style={{ marginBottom: 14 }}>🔥 Hot Right Now</div>
             {[
-              { rank: 1, logo: '🔵', name: 'Google', sub: "OAs out for Summer '26", hot: true, count: '842 posts' },
-              { rank: 2, logo: '🟠', name: 'Amazon', sub: 'Final rounds going out', hot: true, count: '614 posts' },
-              { rank: 3, logo: '🔴', name: 'Netflix', sub: 'Offers extended this week', hot: false, count: '391 posts' },
-              { rank: 4, logo: '🟣', name: 'Stripe', sub: 'Application deadline soon', hot: false, count: '287 posts' },
-              { rank: 5, logo: '🟤', name: 'Jane Street', sub: 'Superdays happening now', hot: false, count: '241 posts' },
+              { rank: 1, name: 'Google', sub: "OAs out for Summer '26", hot: true, count: '842 posts' },
+              { rank: 2, name: 'Amazon', sub: 'Final rounds going out', hot: true, count: '614 posts' },
+              { rank: 3, name: 'Netflix', sub: 'Offers extended this week', hot: false, count: '391 posts' },
+              { rank: 4, name: 'Stripe', sub: 'Application deadline soon', hot: false, count: '287 posts' },
+              { rank: 5, name: 'Jane Street', sub: 'Superdays happening now', hot: false, count: '241 posts' },
             ].map(item => (
               <div key={item.rank} className="trending-item">
                 <span className="trending-rank">{item.rank}</span>
-                <span className="trending-logo">{item.logo}</span>
+                <CompanyLogo name={item.name} size={24} className="trending-logo" />
                 <div style={{ flex: 1 }}>
                   <div className="trending-name">{item.name}</div>
                   <div className="trending-count">{item.sub}</div>
@@ -158,14 +159,14 @@ export default async function DashboardHome({
           <div className="panel-card">
             <div className="section-title" style={{ marginBottom: 14 }}>⏰ Deadlines Soon</div>
             {[
-              { emoji: '🟢', name: 'Stripe', badge: 'deadline-urgent', label: '2 days', role: 'Software Engineer Intern · San Francisco' },
-              { emoji: '🔵', name: 'Airbnb', badge: 'deadline-soon', label: '5 days', role: 'Frontend Engineer Intern · Remote' },
-              { emoji: '🟡', name: 'Figma', badge: 'deadline-soon', label: '8 days', role: 'Product Design Intern · NYC' },
-              { emoji: '⚫', name: 'OpenAI', badge: 'deadline-soon', label: '10 days', role: 'Research Intern · San Francisco' },
+              { name: 'Stripe', badge: 'deadline-urgent', label: '2 days', role: 'Software Engineer Intern · San Francisco' },
+              { name: 'Airbnb', badge: 'deadline-soon', label: '5 days', role: 'Frontend Engineer Intern · Remote' },
+              { name: 'Figma', badge: 'deadline-soon', label: '8 days', role: 'Product Design Intern · NYC' },
+              { name: 'OpenAI', badge: 'deadline-soon', label: '10 days', role: 'Research Intern · San Francisco' },
             ].map(d => (
               <div key={d.name} className="upcoming-item">
                 <div className="upcoming-company">
-                  <span>{d.emoji}</span> {d.name}
+                  <CompanyLogo name={d.name} size={20} /> {d.name}
                   <span className={`deadline-badge ${d.badge}`}>{d.label}</span>
                 </div>
                 <div className="upcoming-role">{d.role}</div>
