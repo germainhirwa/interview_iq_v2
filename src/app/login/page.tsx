@@ -50,8 +50,15 @@ function LoginContent() {
 
         <div className="auth-header">
           <h1>Welcome back</h1>
-          <p>Sign in with your Google account to access the recruiting hub.</p>
+          <p>Sign in with your <strong>.edu</strong> google school account to access the recruiting hub.</p>
         </div>
+
+        {searchParams.get('error') === 'Only .edu emails allowed' && (
+          <div className="auth-error" style={{ marginBottom: 20, textAlign: 'center' }}>
+            <strong>Access Denied:</strong> We only support verified university (.edu) emails at this time.
+            <br />Please select your school account.
+          </div>
+        )}
 
         {error && <div className="auth-error">{error}</div>}
 
@@ -64,7 +71,7 @@ function LoginContent() {
         </button>
 
         <p className="auth-note">
-          You’ll be redirected securely via Google.
+          Sign in securely via Google. Only .edu domains are accepted.
         </p>
       </div>
     </div>

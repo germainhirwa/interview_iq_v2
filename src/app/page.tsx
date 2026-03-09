@@ -247,7 +247,7 @@ export default function LandingPage() {
           <a href="#features">Features</a>
           <a href="#how">How It Works</a>
           <a href="#pricing">Access</a>
-          <a href="#companies">Companies</a>
+          <Link href="/login">Companies</Link>
         </div>
         <div className="nav-cta">
           <Link href="/login" className="btn-ghost">
@@ -357,7 +357,8 @@ export default function LandingPage() {
 
         <div className="hero-actions">
           <Link href="/login" className="btn-hero">
-            Get Early Access — It&apos;s Free →
+            {/* Get Early Access — It&apos;s Free → */}
+            Start Browsing — It&apos;s Free →
           </Link>
           <a className="btn-secondary" href="#features">
             <span>▶</span> See how it works
@@ -884,16 +885,13 @@ export default function LandingPage() {
                   <span style={{ color: 'var(--text3)' }}>Post experiences</span>
                 </div>
               </div>
-              <button
+              <Link
+                href="/login"
                 className="btn-ghost"
-                style={{ width: '100%', padding: 12, borderRadius: 10, fontSize: 14 }}
-                type="button"
-                onClick={() => {
-                  window.scrollTo({ top: 0, behavior: 'smooth' })
-                }}
+                style={{ width: '100%', padding: 12, borderRadius: 10, fontSize: 14, display: 'inline-block', textAlign: 'center' }}
               >
                 Start Browsing
-              </button>
+              </Link>
             </div>
 
             <div className="viral-card featured reveal reveal-delay-1">
@@ -1098,8 +1096,8 @@ export default function LandingPage() {
       <footer>
         <div className="footer-logo">InterviewIQ</div>
         <div className="footer-links">
-          <a href="#">About</a>
-          <a href="#">Privacy</a>
+          <Link href="/about">About</Link>
+          <Link href="/privacy">Privacy</Link>
           <a href="#">Terms</a>
           <a href="#">Contact</a>
         </div>

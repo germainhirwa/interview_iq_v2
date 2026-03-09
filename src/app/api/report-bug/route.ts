@@ -1,4 +1,6 @@
-import { NextResponse } from 'next/server'
+import { Resend } from 'resend'
+
+const resend = new Resend(process.env.RESEND_API_KEY)
 
 export async function POST(req: Request) {
     try {
@@ -12,17 +14,15 @@ export async function POST(req: Request) {
             )
         }
 
-        // In a real production app, you would integrate Resend or Sendgrid here.
-        // Example: 
-        // await resend.emails.send({
-        //   from: 'bugs@interviewiq.app',
-        //   to: 'higermain1@gmail.com',
-        //   subject: 'New Bug Report',
-        //   text: description
-        // })
+        // Send email via Resend
+        await resend.emails.send({
+            from: 'InterviewIQ <onboarding@resend.dev>', // Resend's default test sender
+            to: 'higermain1@gmail.com',
+            subject: 'New Bug Report 🐛',
+            text: `You have a new bug report from InterviewIQ:\n\n${description}`
+        })
 
-        // For now, we simulate success and log it to the server console:
-        console.log('--- NEW BUG REPORT ---')
+        console.log('--- NEW BUG REPORT SENT ---')
         console.log(`To: higermain1@gmail.com`)
         console.log(`Description: ${description}`)
         console.log('----------------------')
