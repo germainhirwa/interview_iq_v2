@@ -1,8 +1,6 @@
 import type { Metadata } from 'next'
 import './globals.css'
-import dynamic from 'next/dynamic'
-
-const CursorEffect = dynamic(() => import('@/components/CursorEffect'), { ssr: false })
+import CursorWrapper from '@/components/CursorWrapper'
 
 export const metadata: Metadata = {
   title: 'InterviewIQ — The CS Recruiting Intelligence Platform',
@@ -29,7 +27,7 @@ export default function RootLayout({
       <body>
         <div className="cursor" id="cursor" />
         <div className="cursor-ring" id="cursorRing" />
-        <CursorEffect />
+        <CursorWrapper />
         {children}
       </body>
     </html>
