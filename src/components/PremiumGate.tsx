@@ -48,8 +48,8 @@ export default function PremiumGate({ featureName, featureIcon, description, bul
         </ul>
 
         <div className="premium-gate-actions">
-          <a href={`/api/checkout?products=${process.env.NEXT_PUBLIC_POLAR_PRODUCT_ID || ''}`} className="premium-upgrade-btn">
-            ✨ Upgrade with Polar
+          <a href="/api/checkout" className="premium-upgrade-btn">
+            ✨ Upgrade to Premium
           </a>
           <Link href="/dashboard/invite" className="premium-upgrade-btn" style={{ background: 'var(--surface2)', border: '1px solid var(--border2)', marginTop: 10 }}>
             🎁 Invite 5 Friends
