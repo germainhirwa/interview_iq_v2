@@ -42,8 +42,7 @@ export async function POST(req: Request) {
                 }
                 break;
             }
-            case "customer.subscription.deleted":
-            case "customer.subscription.canceled": {
+            case "customer.subscription.deleted": {
                 const userId = session.metadata?.userId;
                 console.log("Stripe subscription canceled for user:", userId);
 
