@@ -35,7 +35,6 @@ export const GET = async (request: Request) => {
         }
 
         const price = prices.data[0];
-        const url = new URL(request.url);
 
         // Create Checkout Session
         const session = await stripe.checkout.sessions.create({
