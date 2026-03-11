@@ -48,9 +48,14 @@ export default function PremiumGate({ featureName, featureIcon, description, bul
         </ul>
 
         <div className="premium-gate-actions">
-          <a href="/api/checkout" className="premium-upgrade-btn">
-            ✨ Upgrade to Premium
-          </a>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 10, width: '100%' }}>
+            <a href="/api/checkout?plan=monthly" className="premium-upgrade-btn">
+              ⚡ Get Monthly Access — $1.99
+            </a>
+            <a href="/api/checkout?plan=lifetime" className="premium-upgrade-btn" style={{ background: 'var(--surface2)', border: '1px solid var(--border2)', color: 'var(--text)' }}>
+              💎 Get Lifetime Access — $20
+            </a>
+          </div>
           <Link href="/dashboard/invite" className="premium-upgrade-btn" style={{ background: 'var(--surface2)', border: '1px solid var(--border2)', marginTop: 10 }}>
             🎁 Invite 5 Friends
           </Link>

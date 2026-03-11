@@ -218,9 +218,14 @@ export default function SettingsPage() {
               </div>
             </div>
             {!isPremium && (
-              <a href="/api/checkout" className="premium-upgrade-btn" style={{ width: '100%', display: 'inline-block', textAlign: 'center', textDecoration: 'none', boxSizing: 'border-box' }}>
-                👑 Upgrade to Premium
-              </a>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+                <a href="/api/checkout?plan=monthly" className="premium-upgrade-btn" style={{ width: '100%', display: 'inline-block', textAlign: 'center', textDecoration: 'none', boxSizing: 'border-box' }}>
+                  ⚡ Monthly Access — $1.99
+                </a>
+                <a href="/api/checkout?plan=lifetime" className="premium-upgrade-btn" style={{ width: '100%', display: 'inline-block', textAlign: 'center', textDecoration: 'none', boxSizing: 'border-box', background: 'var(--surface2)', border: '1px solid var(--border2)', color: 'var(--text)' }}>
+                  💎 Lifetime Access — $20
+                </a>
+              </div>
             )}
           </div>
 

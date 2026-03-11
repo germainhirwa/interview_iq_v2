@@ -877,32 +877,44 @@ export default function LandingPage() {
               >
                 Free <span style={{ WebkitTextFillColor: 'var(--text3)' }}>with invite or</span>
               </div>
-              <div
-                style={{
-                  fontFamily: 'var(--display)',
-                  fontSize: 28,
-                  fontWeight: 800,
-                  letterSpacing: -1,
-                  marginBottom: 6,
-                  color: 'var(--text)',
-                }}
-              >
-                $9<span style={{ fontSize: 16, fontWeight: 400, color: 'var(--text3)' }}>/mo</span>
-              </div>
-              <div className="plan-desc">
-                Invite 5 friends and unlock everything for free — forever. Or pay $9/mo. Either way, you win.
-              </div>
-              <div className="invite-visual">
-                <div className="invite-dots">
-                  <div className="inv-dot filled">✓</div>
-                  <div className="inv-dot filled">✓</div>
-                  <div className="inv-dot">3</div>
-                  <div className="inv-dot">4</div>
-                  <div className="inv-dot">5</div>
+              
+              <div style={{ display: 'flex', gap: 20, marginBottom: 16 }}>
+                <div>
+                  <div style={{ fontSize: 13, color: 'var(--text3)', marginBottom: 4 }}>Monthly</div>
+                  <div
+                    style={{
+                      fontFamily: 'var(--display)',
+                      fontSize: 28,
+                      fontWeight: 800,
+                      letterSpacing: -1,
+                      color: 'var(--text)',
+                    }}
+                  >
+                    $1.99<span style={{ fontSize: 14, fontWeight: 400, color: 'var(--text3)' }}>/mo</span>
+                  </div>
                 </div>
-                <div className="invite-label">Invite 5 → Unlock Everything</div>
+                <div style={{ width: 1, background: 'var(--border2)' }} />
+                <div>
+                  <div style={{ fontSize: 13, color: 'var(--text3)', marginBottom: 4 }}>Lifetime</div>
+                  <div
+                    style={{
+                      fontFamily: 'var(--display)',
+                      fontSize: 28,
+                      fontWeight: 800,
+                      letterSpacing: -1,
+                      color: 'var(--text)',
+                    }}
+                  >
+                    $20
+                  </div>
+                </div>
               </div>
-              <div className="plan-features">
+
+              <div className="plan-desc" style={{ marginBottom: 20 }}>
+                Invite 5 friends and unlock everything for free — forever. Or choose a plan below.
+              </div>
+              
+              <div className="plan-features" style={{ marginBottom: 24 }}>
                 <div className="plan-feature">
                   <span className="check">✓</span> Everything in Free
                 </div>
@@ -915,20 +927,30 @@ export default function LandingPage() {
                 <div className="plan-feature">
                   <span className="check">✓</span> Full compensation database
                 </div>
-                <div className="plan-feature">
+                {/* <div className="plan-feature">
                   <span className="check">✓</span> Deadline alerts &amp; notifications
                 </div>
                 <div className="plan-feature">
                   <span className="check">✓</span> Resume intelligence (coming soon)
-                </div>
+                </div> */}
               </div>
-              <Link
-                href="/login"
-                className="btn-hero"
-                style={{ width: '100%', padding: 13, borderRadius: 10, fontSize: 14, display: 'inline-block' }}
-              >
-                Get Full Access →
-              </Link>
+
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+                <a
+                  href="/api/checkout?plan=monthly"
+                  className="btn-hero"
+                  style={{ width: '100%', padding: 13, borderRadius: 10, fontSize: 14, display: 'inline-block', textAlign: 'center' }}
+                >
+                  ⚡ Get Monthly Access — $1.99
+                </a>
+                <a
+                  href="/api/checkout?plan=lifetime"
+                  className="btn-hero"
+                  style={{ width: '100%', padding: 13, borderRadius: 10, fontSize: 14, display: 'inline-block', textAlign: 'center', background: 'var(--surface2)', border: '1px solid var(--border2)', color: 'var(--text)' }}
+                >
+                  💎 Get Lifetime Access — $20
+                </a>
+              </div>
             </div>
           </div>
         </div>

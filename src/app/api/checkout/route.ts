@@ -12,9 +12,15 @@ export const GET = async (request: Request) => {
             return NextResponse.redirect(`${url.origin}/login`);
         }
 
-        const productId = process.env.STRIPE_PRODUCT_ID;
+        const url = new URL(request.url);
+        const plan = url.searchParams.get('plan') || 'monthly';
+        
+        const productId = plan === 'lifetime' 
+            ? process.env.STRIPE_LIFETIME_PRODUCT_ID 
+            : process.env.STRIPE_MONTHLY_PRODUCT_ID;
+
         if (!productId) {
-            throw new Error("Stripe Product ID is not set in environment variables");
+            throw new Error(`Stripe Product ID for plan "${plan}" is not set in environment variables`);
         }
 
         // Fetch prices for the given product
@@ -25,7 +31,7 @@ export const GET = async (request: Request) => {
         });
 
         if (prices.data.length === 0) {
-            throw new Error("No active price found for the given Stripe Product");
+            throw new Error(`No active price found for the given Stripe Product: ${productId}`);
         }
 
         const price = prices.data[0];
